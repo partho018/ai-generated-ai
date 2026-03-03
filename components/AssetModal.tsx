@@ -1,5 +1,6 @@
+'use client';
 import { useState } from 'react';
-import type { Asset } from '../types';
+import type { Asset } from '@/lib/types';
 
 interface AssetModalProps {
     asset: Asset;

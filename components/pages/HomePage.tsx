@@ -1,6 +1,7 @@
+'use client';
 import { useState, useRef } from 'react';
-import type { Asset } from '../types';
-import { generateImages } from '../services/imageService';
+import type { Asset } from '@/lib/types';
+import { generateImages } from '@/lib/imageService';
 
 interface HomePageProps {
     allAssets: Asset[];
@@ -63,6 +64,7 @@ export default function HomePage({ allAssets, setAllAssets, showMsg, onGoToAsset
         setPrompt('');
         setGenerating(true);
         setGeneratedImages([]);
+        
         try {
             const result = await generateImages({
                 prompt: currentPrompt,
@@ -71,6 +73,7 @@ export default function HomePage({ allAssets, setAllAssets, showMsg, onGoToAsset
                 model: imageModel,
                 imageRefs,
             });
+            console.log("🎨 Generation SUCCESS! Photo link received:", result.images[0]);
             setGeneratedImages(result.images);
             setAllAssets(prev => [
                 ...result.images.map((url: string, i: number) => ({
@@ -83,9 +86,12 @@ export default function HomePage({ allAssets, setAllAssets, showMsg, onGoToAsset
                 })),
                 ...prev,
             ]);
-            const src = result.provider === 'backend' ? 'Google AI' : 'Pollinations';
+            
+            // নতুন জেমিনি ইঞ্জিন
+            const src = result.provider === 'Gemini 2.0 Flash' ? 'Gemini 2.0 Flash' : 'AI Studio (Backup)';
             showMsg(`${result.images.length} image${result.images.length > 1 ? 's' : ''} generated via ${src}! ✨`, 'success');
         } catch (err: any) {
+            console.error("❌ Generation failed:", err.message);
             showMsg('Failed: ' + err.message, 'error');
         } finally {
             setGenerating(false);

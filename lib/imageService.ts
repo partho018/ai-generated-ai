@@ -1,16 +1,6 @@
 // ──────────────────────────────────────────────────────────────────────────────
 // imageService.ts — Image Generation Abstraction Layer
-//
-// HOW TO SWITCH TO GOOGLE API (paid):
-//   1. Start the Next.js backend:  npm run dev  (in root folder)
-//   2. Set in frontend/.env:       VITE_BACKEND_URL=http://localhost:3001
-//   3. The backend route.ts handles Google Imagen API calls with your GOOGLE_API_KEY
-//
-// CURRENT MODE (free, no backend):
-//   VITE_BACKEND_URL is empty → uses Pollinations.ai directly
 // ──────────────────────────────────────────────────────────────────────────────
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL as string | undefined;
 
 // Aspect ratio → pixel dimensions for Pollinations
 function getDimensions(aspectRatio: string): { w: number; h: number } {
@@ -29,7 +19,7 @@ function getDimensions(aspectRatio: string): { w: number; h: number } {
     return map[aspectRatio] ?? { w: 1024, h: 1024 };
 }
 
-// ── Free: Pollinations.ai (no API key, no backend needed) ──────────────────────
+// ── Free: Pollinations.ai ──────────────────────
 function pollinationsUrl(prompt: string, aspectRatio: string, seed?: number): string {
     const { w, h } = getDimensions(aspectRatio);
     const s = seed ?? Math.floor(Math.random() * 9999999);
@@ -41,7 +31,6 @@ async function generateWithPollinations(
     count: number,
     aspectRatio: string,
 ): Promise<string[]> {
-    // Return URLs — browser loads them directly (Pollinations supports CORS)
     return Array.from({ length: count }, (_, i) =>
         pollinationsUrl(prompt, aspectRatio, Math.floor(Math.random() * 9999999) + i)
     );
@@ -55,8 +44,7 @@ async function generateWithBackend(
     model: string,
     imageRefs: string[],
 ): Promise<string[]> {
-    const url = `${BACKEND_URL}/api/generate`;
-    const res = await fetch(url, {
+    const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, count, aspectRatio, model, imageRefs }),
@@ -91,15 +79,7 @@ export async function generateImages(opts: GenerateOptions): Promise<GenerateRes
 
     if (!prompt.trim()) throw new Error('Prompt is required');
 
-    // If VITE_BACKEND_URL is set → use paid backend (Google Imagen etc.)
-    if (BACKEND_URL) {
-        console.log('🌐 Using backend:', BACKEND_URL);
-        const images = await generateWithBackend(prompt, count, aspectRatio, model, imageRefs);
-        return { images, provider: 'backend' };
-    }
-
-    // Default: free Pollinations (no backend needed)
-    console.log('🌸 Using Pollinations (free)');
-    const images = await generateWithPollinations(prompt, count, aspectRatio);
-    return { images, provider: 'pollinations' };
+    // শুধুমাত্র Backend (Google API) ব্যবহার করা হবে। এতে কোনো সমস্যা হলে সরাসরি এরর দেখাবে।
+    const images = await generateWithBackend(prompt, count, aspectRatio, model, imageRefs);
+    return { images, provider: 'backend' };
 }

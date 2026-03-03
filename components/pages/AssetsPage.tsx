@@ -1,4 +1,6 @@
-import type { Asset } from '../types';
+'use client';
+import React from 'react';
+import type { Asset } from '@/lib/types';
 
 interface AssetsPageProps {
     allAssets: Asset[];
@@ -117,5 +119,3 @@ export default function AssetsPage({ allAssets, setAllAssets, selectedAsset, set
         </div>
     );
 }
-
-import React from 'react';

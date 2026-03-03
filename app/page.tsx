@@ -1,12 +1,15 @@
+'use client';
 import { useState } from 'react';
-import type { Asset, PageId, ToastType } from './types';
-import Sidebar from './components/Sidebar';
-import Toast from './components/Toast';
-import AssetModal from './components/AssetModal';
-import PricingPage from './pages/PricingPage';
-import AssetsPage from './pages/AssetsPage';
-import ImagePage from './pages/ImagePage';
-import HomePage from './pages/HomePage';
+import type { Asset, PageId, ToastType } from '@/lib/types';
+import Sidebar from '@/components/Sidebar';
+import Toast from '@/components/Toast';
+import AssetModal from '@/components/AssetModal';
+
+// Pages as components
+import PricingPage from '@/components/pages/PricingPage';
+import AssetsPage from '@/components/pages/AssetsPage';
+import ImagePage from '@/components/pages/ImagePage';
+import HomePage from '@/components/pages/HomePage';
 
 function ComingSoon({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
     return (
@@ -18,7 +21,7 @@ function ComingSoon({ icon, title, desc }: { icon: React.ReactNode; title: strin
     );
 }
 
-export default function App() {
+export default function Page() {
     const [activePage, setActivePage] = useState<PageId>('home');
     const [allAssets, setAllAssets] = useState<Asset[]>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -59,7 +62,7 @@ export default function App() {
     ];
 
     return (
-        <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: '#0f0f10', color: '#fff', display: 'flex', height: '100vh', overflow: 'hidden' }}>
+        <div style={{ background: '#0f0f10', color: '#fff', display: 'flex', height: '100vh', overflow: 'hidden' }}>
 
             <Sidebar
                 activePage={activePage}

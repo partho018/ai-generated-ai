@@ -1,4 +1,5 @@
-import type { ToastType } from '../types';
+'use client';
+import type { ToastType } from '@/lib/types';
 
 interface ToastProps {
     msg: string;

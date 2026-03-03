@@ -1,5 +1,6 @@
+'use client';
 import React from 'react';
-import type { PageId } from '../types';
+import type { PageId } from '@/lib/types';
 
 const Icons: Record<string, React.FC<{ size?: number; active?: boolean }>> = {
     Home: ({ size = 24 }) => (
