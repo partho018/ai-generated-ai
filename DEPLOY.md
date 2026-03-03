@@ -1,43 +1,35 @@
-# How to Deploy Your Project
+# How to Deploy to Vercel
 
-This project consists of two parts:
-
-1.  **Backend (Next.js)**: Located in the root directory.
-2.  **Frontend (Vite/React)**: Located in the `/frontend` directory.
+This project is now a unified **Next.js** application. Follow these steps to deploy it:
 
 ## Step 1: Push to GitHub
 
-If you haven't already, push your code to a GitHub repository:
+If you haven't already, push your code to your GitHub repository:
 
-1.  Create a new repository on GitHub.
-2.  Run the following commands in your terminal (at the project root):
-    ```bash
-    git remote add origin <YOUR_GITHUB_REPO_URL>
-    git branch -M main
-    git push -u origin main
-    ```
+```bash
+git add .
+git commit -m "Prepare for Vercel"
+git push
+```
 
-## Step 2: Deploy Backend (Next.js)
+## Step 2: Deploy on Vercel
 
-1.  Go to [Vercel](https://vercel.com).
-2.  Import your GitHub repository.
-3.  Select the **Root** directory for the first project (call it `snapai-backend`).
-4.  Add your Environment Variables from `.env`:
-    - `GOOGLE_API_KEY`
-    - `GOOGLE_PROJECT_ID`
-5.  Deploy. You will get a URL like `https://snapai-backend.vercel.app`.
+1. Go to [Vercel](https://vercel.com).
+2. Click **New Project** and import your GitHub repository.
+3. In the **Environment Variables** section, add the following:
 
-## Step 3: Deploy Frontend (Vite)
+| Name                     | Value                                                  |
+| ------------------------ | ------------------------------------------------------ |
+| `GOOGLE_API_KEY`         | _Your Google AI API Key_                               |
+| `GOOGLE_PROJECT_ID`      | _Your Google Project ID_                               |
+| `GOOGLE_SERVICE_ACCOUNT` | _The entire content of your service-account.json file_ |
 
-1.  In Vercel, create another project by importing the same repository.
-2.  This time, set the **Root Directory** to `frontend`.
-3.  Add the following Environment Variable:
-    - `VITE_BACKEND_URL`: `https://snapai-backend.vercel.app` (The URL from Step 2)
-4.  Deploy. You will get your live link!
+4. Click **Deploy**.
+
+## Step 3: Verify
+
+Once deployed, Vercel will give you a live URL (e.g., `https://your-project.vercel.app`). Your app is now live!
 
 ---
 
-**Note**: I have already fixed the build errors that were preventing the project from being deployed.
-
-- Fixed Next.js build by excluding the `frontend` directory from TypeScript checks.
-- Fixed Vite build by adding missing `vite-env.d.ts` for environment variable types.
+**Note**: The code has been updated to automatically use the `GOOGLE_SERVICE_ACCOUNT` environment variable if it exists, ensuring it works perfectly on Vercel without needing the physical JSON file in the repository.
