@@ -2,8 +2,13 @@ import { NextRequest } from "next/server";
 import { GoogleAuth } from "google-auth-library";
 import path from "path";
 
+const credentials = process.env.GOOGLE_SERVICE_ACCOUNT 
+  ? JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT) 
+  : undefined;
+
 const auth = new GoogleAuth({
-  keyFilename: path.join(process.cwd(), "service-account.json"),
+  credentials,
+  keyFilename: credentials ? undefined : path.join(process.cwd(), "service-account.json"),
   scopes: ["https://www.googleapis.com/auth/cloud-platform"],
 });
 
