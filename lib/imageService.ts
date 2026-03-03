@@ -43,7 +43,7 @@ async function generateWithBackend(
     aspectRatio: string,
     model: string,
     imageRefs: string[],
-): Promise<string[]> {
+): Promise<{ images: string[]; provider: string }> {
     const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,7 +51,10 @@ async function generateWithBackend(
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.error ?? 'Backend error');
-    return data.images as string[];
+    return { 
+        images: data.images as string[], 
+        provider: data.provider || 'backend' 
+    };
 }
 
 // ── Main export ────────────────────────────────────────────────────────────────
@@ -65,7 +68,7 @@ export interface GenerateOptions {
 
 export interface GenerateResult {
     images: string[];
-    provider: 'pollinations' | 'backend';
+    provider: string;
 }
 
 export async function generateImages(opts: GenerateOptions): Promise<GenerateResult> {
@@ -80,6 +83,6 @@ export async function generateImages(opts: GenerateOptions): Promise<GenerateRes
     if (!prompt.trim()) throw new Error('Prompt is required');
 
     // শুধুমাত্র Backend (Google API) ব্যবহার করা হবে। এতে কোনো সমস্যা হলে সরাসরি এরর দেখাবে।
-    const images = await generateWithBackend(prompt, count, aspectRatio, model, imageRefs);
-    return { images, provider: 'backend' };
+    const result = await generateWithBackend(prompt, count, aspectRatio, model, imageRefs);
+    return { images: result.images, provider: result.provider };
 }
