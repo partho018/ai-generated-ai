@@ -51,11 +51,10 @@ export default function HomePage({ allAssets, setAllAssets, showMsg, onGoToAsset
     const homeInputRef = useRef<HTMLInputElement>(null);
 
     const MODELS = [
-        { id: 'imagen-4.0-generate-001', label: 'Nano Banana 2', desc: 'Best quality · 4K', badge: 'NEW' },
-        { id: 'imagen-4.0-fast-generate-001', label: 'Nano Banana', desc: 'Fast & efficient', badge: null },
-        { id: 'imagen-3.0-generate-001', label: 'Nano Banana Pro', desc: 'High quality', badge: null },
+        { id: 'imagen-3.0-generate-001', label: 'Imagen 3 Pro', desc: 'Best quality · High detail', badge: 'NEW' },
+        { id: 'imagen-3.0-fast-generate-001', label: 'Imagen 3 Fast', desc: 'Quick generation', badge: null },
     ];
-    const modelLabel = (id: string) => MODELS.find(m => m.id === id)?.label || 'Nano Banana 2';
+    const modelLabel = (id: string) => MODELS.find(m => m.id === id)?.label || 'Imagen 3 Pro';
 
     const handleGenerate = async () => {
         if (!prompt.trim()) { showMsg('Please write what you want to create!', 'error'); return; }
@@ -88,8 +87,7 @@ export default function HomePage({ allAssets, setAllAssets, showMsg, onGoToAsset
             ]);
             
             // নতুন জেমিনি ইঞ্জিন
-            const src = result.provider === 'Gemini 2.0 Flash' ? 'Gemini 2.0 Flash' : 'AI Studio (Backup)';
-            showMsg(`${result.images.length} image${result.images.length > 1 ? 's' : ''} generated via ${src}! ✨`, 'success');
+            showMsg(`${result.images.length} image${result.images.length > 1 ? 's' : ''} generated via ${result.provider}! ✨`, 'success');
         } catch (err: any) {
             console.error("❌ Generation failed:", err.message);
             showMsg('Failed: ' + err.message, 'error');

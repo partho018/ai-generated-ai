@@ -32,7 +32,7 @@ export default function Page() {
 
     // Shared state lifted up for HomePage ↔ ImagePage
     const [imageRefs, setImageRefs] = useState<string[]>([]);
-    const [imageModel, setImageModel] = useState('imagen-4.0-generate-001');
+    const [imageModel, setImageModel] = useState('imagen-3.0-generate-001');
     const [imageAspect, setImageAspect] = useState('1:1');
     const [imageCount, setImageCount] = useState(1);
 
